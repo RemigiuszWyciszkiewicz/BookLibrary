@@ -11,7 +11,7 @@ import java.util.List;
 public class Test {
 
     @GetMapping("/test")
-    ResponseEntity<> test() {
+    ResponseEntity<?> test() {
 
 
         return null;

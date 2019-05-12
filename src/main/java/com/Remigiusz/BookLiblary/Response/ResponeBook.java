@@ -1,4 +1,4 @@
-package com.Remigiusz.BookLiblary.DataModel;
+package com.Remigiusz.BookLiblary.Response;
 
 import lombok.Data;
 
@@ -16,7 +16,5 @@ public class ResponeBook {
     private String thumbnailUrl;
     private Set<String> authors;
     private Set<String> categories;
-
-
 
 }
