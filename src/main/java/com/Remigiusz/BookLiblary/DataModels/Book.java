@@ -17,14 +17,6 @@ public class Book {
     private String etag;
     private String selfLink;
 
-
-
-    VolumeInfo volumeInfo;
-    @JsonIgnore
-    SaleInfo saleInfo;
-    @JsonIgnore
-    AccessInfo accessInfo;
-    @JsonIgnore
-    SearchInfo searchInfo;
+    private VolumeInfo volumeInfo;
 
 }
