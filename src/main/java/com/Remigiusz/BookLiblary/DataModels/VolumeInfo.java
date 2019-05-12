@@ -1,14 +1,15 @@
 package com.Remigiusz.BookLiblary.DataModels;
 
+import com.Remigiusz.BookLiblary.Deserializers.DifferentFormatsDateJsonDeserializer;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import org.springframework.format.annotation.DateTimeFormat;
 
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 @Data
 @AllArgsConstructor
@@ -21,7 +22,12 @@ public class VolumeInfo {
     private String title;
     private Set<String> authors;
     private String publisher;
-    private Date publishedDate;
+
+
+    @JsonDeserialize(using = DifferentFormatsDateJsonDeserializer.class)
+    private Long publishedDate = Long.valueOf(9999999);
+
+
     private String description;
     private String subtitle;
     /*private List<HashMap<String,String>> industryIdentifiers;*/

@@ -1,5 +1,7 @@
 package com.Remigiusz.BookLiblary.Response;
 
+import com.fasterxml.jackson.annotation.JsonFilter;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 
@@ -7,6 +9,7 @@ import java.util.Set;
 
 @Data
 @AllArgsConstructor
+@JsonInclude(value = JsonInclude.Include.NON_NULL)
 public class ResponeBook {
 
     public ResponeBook() {
@@ -18,6 +21,8 @@ public class ResponeBook {
     private String subtitle;
 
     private String publisher;
+
+
     private long publishedDate;
 
     private String description;
@@ -26,7 +31,7 @@ public class ResponeBook {
     private String thumbnailUrl;
     private String language;
     private String previewLink;
-    private Double avarageRating;
+    private Double averageRating;
 
     private Set<String> authors;
     private Set<String> categories;
