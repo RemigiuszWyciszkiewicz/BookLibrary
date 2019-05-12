@@ -26,11 +26,8 @@ public class VolumeInfo {
 
     @JsonDeserialize(using = DifferentFormatsDateJsonDeserializer.class)
     private Long publishedDate = Long.valueOf(9999999);
-
-
     private String description;
     private String subtitle;
-    /*private List<HashMap<String,String>> industryIdentifiers;*/
     private List<IndustryIdentifiers> industryIdentifiers;
     private List<HashMap<String,Boolean>> readingModes;
     private int pageCount;

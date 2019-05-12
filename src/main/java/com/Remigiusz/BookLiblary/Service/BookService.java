@@ -16,14 +16,32 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
+
 
 @Service
 public class BookService {
 
+    static final String ALL_BOOKS_FROM_GOOGLE_API_URL = "https://www.googleapis.com/books/v1/volumes?q=java&maxResults=40&fields=items";
+
+    public Optional<ResponeBook> getBookByISBN(String isbn) throws IOException {
+
+       Optional<ResponeBook> optionalResponeBook =
+        fetchResponseBookList().stream().filter(responeBook -> responeBook.getIsbn().equals(isbn)).findAny();
+
+        return optionalResponeBook;
+    }
+
+    public List<ResponeBook> getResponseBooksByCategory(String category) throws IOException {
+
+        System.out.println(fetchResponseBookList().stream().filter(responeBook -> responeBook.getCategories().contains(category)).count());
+        /*List<ResponeBook> responeBookListBySpecificCategory = */
+        return null;
+    }
 
 
-    public List<ResponeBook> fetchResponseBookList() throws IOException {
+    private List<ResponeBook> fetchResponseBookList() throws IOException {
 
         List<ResponeBook> responeBooks = deserializeDataFromJsonToBook().stream().map(book -> {
             String thumbnailUrl;
@@ -47,14 +65,12 @@ public class BookService {
                     book.getVolumeInfo().getCategories());
         }).collect(Collectors.toList());
 
-        responeBooks.forEach(responeBook -> System.out.println(responeBook.getAuthors()));
-
         return responeBooks;
     }
 
     private List<Book> deserializeDataFromJsonToBook() {
         RestTemplate restTemplate = new RestTemplate();
-        String s = restTemplate.getForObject("https://www.googleapis.com/books/v1/volumes?q=java&maxResults=40&fields=items", String.class);
+        String s = restTemplate.getForObject(ALL_BOOKS_FROM_GOOGLE_API_URL, String.class);
 
         JSONObject objects = new JSONObject(s);
         JSONArray jsonArray = objects.getJSONArray("items");

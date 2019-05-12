@@ -2,6 +2,7 @@ package com.Remigiusz.BookLiblary;
 
 import com.Remigiusz.BookLiblary.DataModels.Book;
 import com.Remigiusz.BookLiblary.Response.ResponeBook;
+import com.Remigiusz.BookLiblary.Service.BookService;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.JsonNode;
@@ -10,6 +11,7 @@ import com.jayway.jsonpath.internal.filter.ValueNode;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -31,16 +33,6 @@ public class BookLiblaryApplication {
 
 	public static void main(String[] args) throws IOException {
 		SpringApplication.run(BookLiblaryApplication.class, args);
-
-
-
-
-
-
-
-
-
-
 
 
 
