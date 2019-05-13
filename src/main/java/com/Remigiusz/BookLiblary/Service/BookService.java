@@ -10,6 +10,7 @@ import org.json.JSONObject;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
+import javax.annotation.PostConstruct;
 import java.io.IOException;
 import java.sql.Timestamp;
 import java.text.ParseException;
@@ -23,73 +24,36 @@ import java.util.stream.Collectors;
 @Service
 public class BookService {
 
-    static final String ALL_BOOKS_FROM_GOOGLE_API_URL = "https://www.googleapis.com/books/v1/volumes?q=java&maxResults=40&fields=items";
+    private List<ResponeBook> listOfBooksFromGoogleApi;
 
-    public Optional<ResponeBook> getBookByISBN(String isbn) throws IOException {
+    @PostConstruct
+    private void initListOfBooksFromGoogleApi() throws IOException {
+
+        BooksFromGoogleApiProvider booksFromGoogleApiProvider = new BooksFromGoogleApiProvider();
+
+        this.listOfBooksFromGoogleApi = booksFromGoogleApiProvider.fetchResponseBookList();
+
+    }
+
+    public Optional<ResponeBook> getBookByISBN(String isbn) {
 
        Optional<ResponeBook> optionalResponeBook =
-        fetchResponseBookList().stream().filter(responeBook -> responeBook.getIsbn().equals(isbn)).findAny();
+               listOfBooksFromGoogleApi.stream().filter(responeBook -> responeBook.getIsbn().equals(isbn)).findAny();
 
         return optionalResponeBook;
     }
 
-    public List<ResponeBook> getResponseBooksByCategory(String category) throws IOException {
+    public List<ResponeBook> getBooksByCategory(String category) {
 
-        System.out.println(fetchResponseBookList().stream().filter(responeBook -> responeBook.getCategories().contains(category)).count());
-        /*List<ResponeBook> responeBookListBySpecificCategory = */
-        return null;
+        List<ResponeBook> booksWithSpecificCategory=this.listOfBooksFromGoogleApi.stream()
+                .filter(responeBook -> responeBook.getCategories() != null)
+                .filter(responeBook -> responeBook.getCategories().contains(category)).collect(Collectors.toList());
+
+        return booksWithSpecificCategory;
     }
 
 
-    private List<ResponeBook> fetchResponseBookList() throws IOException {
 
-        List<ResponeBook> responeBooks = deserializeDataFromJsonToBook().stream().map(book -> {
-            String thumbnailUrl;
-            if (book.getVolumeInfo().getImageLinks() == null) {
-                thumbnailUrl = null;
-            } else thumbnailUrl = book.getVolumeInfo().getImageLinks().get("thumbnail");
-
-            return new ResponeBook(
-                    book.getVolumeInfo().getIndustryIdentifiers().get(0).getIdentifier(),
-                    book.getVolumeInfo().getTitle(),
-                    book.getVolumeInfo().getSubtitle(),
-                    book.getVolumeInfo().getPublisher(),
-                    book.getVolumeInfo().getPublishedDate(),
-                    book.getVolumeInfo().getDescription(),
-                    book.getVolumeInfo().getPageCount(),
-                    thumbnailUrl,
-                    book.getVolumeInfo().getLanguage(),
-                    book.getVolumeInfo().getPreviewLink(),
-                    book.getVolumeInfo().getAverageRating(),
-                    book.getVolumeInfo().getAuthors(),
-                    book.getVolumeInfo().getCategories());
-        }).collect(Collectors.toList());
-
-        return responeBooks;
-    }
-
-    private List<Book> deserializeDataFromJsonToBook() {
-        RestTemplate restTemplate = new RestTemplate();
-        String s = restTemplate.getForObject(ALL_BOOKS_FROM_GOOGLE_API_URL, String.class);
-
-        JSONObject objects = new JSONObject(s);
-        JSONArray jsonArray = objects.getJSONArray("items");
-
-        ObjectMapper objectMapper = new ObjectMapper();
-        objectMapper.enable(DeserializationFeature.ACCEPT_SINGLE_VALUE_AS_ARRAY);
-        objectMapper.disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);
-
-
-        TypeReference ref = new TypeReference<List<Book>>() {};
-        List<Book> list = null;
-        try {
-            list = objectMapper.readValue(jsonArray.toString(), ref);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-        return list;
-    }
 
 
 }

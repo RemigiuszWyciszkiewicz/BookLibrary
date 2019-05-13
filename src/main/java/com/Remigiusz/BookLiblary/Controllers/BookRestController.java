@@ -31,9 +31,11 @@ public class BookRestController {
     @GetMapping("/books/{category}")
     ResponseEntity<List<ResponeBook>> getBooksByCategory(@PathVariable(name = "category",required = true) String category) throws IOException {
 
-        List<ResponeBook> responeBookList = bookService.getResponseBooksByCategory(category);
+        List<ResponeBook> responeBookList = bookService.getBooksByCategory(category);
+
         if(responeBookList.isEmpty()) throw new NotFoundException("There are not books with this category");
         else return ResponseEntity.ok(responeBookList);
+
 
     }
 
