@@ -20,10 +20,8 @@ public class VolumeInfo {
     }
 
     private String title;
-    private Set<String> authors;
+    private List<String> authors;
     private String publisher;
-
-
     @JsonDeserialize(using = DifferentFormatsDateJsonDeserializer.class)
     private Long publishedDate = Long.valueOf(9999999);
     private String description;

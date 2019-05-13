@@ -1,23 +1,12 @@
 package com.Remigiusz.BookLiblary.Service;
 
-import com.Remigiusz.BookLiblary.DataModels.Book;
-import com.Remigiusz.BookLiblary.Response.ResponeBook;
-import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.DeserializationFeature;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import org.json.JSONArray;
-import org.json.JSONObject;
-import org.springframework.stereotype.Service;
-import org.springframework.web.client.RestTemplate;
 
+import com.Remigiusz.BookLiblary.Response.AuthorRatingResponse;
+import com.Remigiusz.BookLiblary.Response.ResponeBook;
+import org.springframework.stereotype.Service;
 import javax.annotation.PostConstruct;
 import java.io.IOException;
-import java.sql.Timestamp;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 import java.util.stream.Collectors;
 
 
@@ -45,11 +34,55 @@ public class BookService {
 
     public List<ResponeBook> getBooksByCategory(String category) {
 
+        getAuthorsRating();
+
         List<ResponeBook> booksWithSpecificCategory=this.listOfBooksFromGoogleApi.stream()
                 .filter(responeBook -> responeBook.getCategories() != null)
                 .filter(responeBook -> responeBook.getCategories().contains(category)).collect(Collectors.toList());
 
         return booksWithSpecificCategory;
+    }
+
+    public List getAuthorsRating()
+    {
+
+        List<ResponeBook> bookWithoutNullsAsAuthorAndRating=listOfBooksFromGoogleApi.stream()
+                .filter(responeBook -> responeBook.getAuthors() != null)
+                .filter(responeBook -> responeBook.getAverageRating() != null)
+                .collect(Collectors.toList());
+
+        List<String> authors=bookWithoutNullsAsAuthorAndRating.stream()
+                .flatMap(responeBook -> responeBook.getAuthors().stream())
+                .distinct()
+                .collect(Collectors.toList());
+
+        List<AuthorRatingResponse> stringResponeBookMap = new ArrayList<>();
+
+        for (int i = 0; i < authors.size(); i++) {
+            for (int j = 0; j < bookWithoutNullsAsAuthorAndRating.size(); j++) {
+                if(bookWithoutNullsAsAuthorAndRating.get(j).getAuthors().contains(authors.get(i))) {
+                    stringResponeBookMap.add(new AuthorRatingResponse(authors.get(i),bookWithoutNullsAsAuthorAndRating.get(j).getAverageRating()));
+                }
+            }
+        }
+
+  /*      Map<String, Double> averages = stringResponeBookMap.stream().collect(
+                        Collectors.groupingBy(e -> e.getAuthor(),
+                                Collectors.averagingDouble(AuthorRatingResponse::getRating)));
+
+*/
+
+
+
+        Map<String,Double> stringDoubleMap=stringResponeBookMap.stream().collect(Collectors.groupingBy(w -> w.));
+
+
+
+
+
+
+
+        return null;
     }
 
 
