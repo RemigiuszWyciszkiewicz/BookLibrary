@@ -11,9 +11,9 @@ import java.util.Set;
 @Data
 @AllArgsConstructor
 @JsonInclude(value = JsonInclude.Include.NON_NULL)
-public class ResponeBook {
+public class BookResponse {
 
-    public ResponeBook() {
+    public BookResponse() {
     }
 
     private String isbn;

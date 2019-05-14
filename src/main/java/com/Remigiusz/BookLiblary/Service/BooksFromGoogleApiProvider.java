@@ -1,14 +1,14 @@
 package com.Remigiusz.BookLiblary.Service;
 
 import com.Remigiusz.BookLiblary.DataModels.Book;
-import com.Remigiusz.BookLiblary.Response.ResponeBook;
+import com.Remigiusz.BookLiblary.Response.BookResponse;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.springframework.web.client.RestTemplate;
-import javax.annotation.PostConstruct;
+
 import java.io.IOException;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -19,16 +19,16 @@ public class BooksFromGoogleApiProvider {
 
 
 
-    public List<ResponeBook> fetchResponseBookList() throws IOException {
+    public List<BookResponse> fetchResponseBookList() throws IOException {
 
 
-        List<ResponeBook> responeBooks = deserializeDataFromJsonToBook().stream().map(book -> {
+        List<BookResponse> responeBooks = deserializeDataFromJsonToBook().stream().map(book -> {
             String thumbnailUrl;
             if (book.getVolumeInfo().getImageLinks() == null) {
                 thumbnailUrl = null;
             } else thumbnailUrl = book.getVolumeInfo().getImageLinks().get("thumbnail");
 
-            return new ResponeBook(
+            return new BookResponse(
                     book.getVolumeInfo().getIndustryIdentifiers().get(0).getIdentifier(),
                     book.getVolumeInfo().getTitle(),
                     book.getVolumeInfo().getSubtitle(),
