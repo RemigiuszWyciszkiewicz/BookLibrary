@@ -8,5 +8,8 @@ Tools such as **Postman** and **RestAssured** helped me perform test on my api.
 
 Most commonly used design pattern in this app is dependency incjection,i used it to inject BookService into api controller.
 
-### Tests code: 
+### Tests results:
+
+![](src/main/resources/test_code.PNG)
+![](src/main/resources/test_results.PNG)
 
