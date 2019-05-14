@@ -8,6 +8,9 @@ import lombok.Data;
 @AllArgsConstructor
 public class AuthorRatingResponse {
 
+    public AuthorRatingResponse() {
+    }
+
     private String author;
     private Double rating;
 

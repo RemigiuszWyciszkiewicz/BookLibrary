@@ -19,11 +19,13 @@ public class BookResponse {
     private String isbn;
     private String title;
     private String subtitle;
+
     private String publisher;
     private long publishedDate;
     private String description;
     private int pageCount;
     private String thumbnailUrl;
+
     private String language;
     private String previewLink;
     private Double averageRating;

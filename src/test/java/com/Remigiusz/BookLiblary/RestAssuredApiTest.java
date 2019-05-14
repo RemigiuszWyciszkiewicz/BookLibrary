@@ -20,6 +20,19 @@ public class RestAssuredApiTest {
         get(Endpoints.CONTEXT_PATH+"/books/Computers").then().statusCode(200).log().body();
 
     }
+    @Test
+    public void testAuthorsRatings() {
+        get(Endpoints.CONTEXT_PATH+"/authors").then().statusCode(200).log().body();
+
+    }
+
+    @Test
+    public void testAllBooks() {
+        get(Endpoints.CONTEXT_PATH+"/books").then().statusCode(200).log().body();
+
+    }
+
+
 
 
 

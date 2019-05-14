@@ -6,6 +6,7 @@ import com.Remigiusz.BookLiblary.Response.BookResponse;
 import com.Remigiusz.BookLiblary.Service.BookService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
@@ -13,6 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.io.IOException;
 import java.util.List;
 
+@CrossOrigin(origins = "*", maxAge = 3600)
 @RestController
 public class BookRestController {
 
@@ -20,7 +22,7 @@ public class BookRestController {
     BookService bookService;
 
     @GetMapping("/book/{isbn}")
-    ResponseEntity<BookResponse> getSingleBook(@PathVariable(name = "isbn",required = true) String isbn) throws IOException {
+    ResponseEntity<BookResponse> getSingleBook(@PathVariable(name = "isbn",required = true) String isbn) {
 
        BookResponse responeBook= bookService.getBookByISBN(isbn)
                .orElseThrow(() -> { throw new NotFoundException("There is not product with isbn - " + isbn); } );
@@ -29,13 +31,15 @@ public class BookRestController {
     }
 
     @GetMapping("/books/{category}")
-    ResponseEntity<List<BookResponse>> getBooksByCategory(@PathVariable(name = "category",required = true) String category) throws IOException {
+    ResponseEntity<List<BookResponse>> getBooksByCategory(@PathVariable(name = "category",required = true) String category) {
 
         List<BookResponse> responeBookList = bookService.getBooksByCategory(category);
 
         if(responeBookList.isEmpty()) throw new NotFoundException("There are not books with this category");
         else return ResponseEntity.ok(responeBookList);
     }
+
+
 
     @GetMapping("/authors")
     ResponseEntity<List<AuthorRatingResponse>> getAuthorsRatings(){

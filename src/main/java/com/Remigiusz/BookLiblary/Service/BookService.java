@@ -24,6 +24,8 @@ public class BookService {
 
     }
 
+   
+
     public Optional<BookResponse> getBookByISBN(String isbn) {
 
        Optional<BookResponse> optionalResponeBook =
@@ -61,7 +63,7 @@ public class BookService {
         // 3 - Declaring list of object that consists author and rating fields
         List<AuthorRatingResponse> authorRatingResponsesList = new ArrayList<>();
 
-        // 4 - Joining authors and thier books in nested loop
+        // 4 - Joining authors and thier ratings in nested loop
         IntStream.range(0, authors.size())
                 .forEach(index_1 -> { IntStream.range(0, bookWithoutNulls.size()).forEach( index_2 -> {
 
@@ -76,7 +78,7 @@ public class BookService {
                Collectors.averagingDouble(value -> value.getRating())));
 
 
-        // 6 - Sort descending and map Map into BookResponse list
+        // 6 - Sorting descending and maping Map into BookResponse list
         List<AuthorRatingResponse> authorRatingResponses = averages.entrySet().stream()
                 .sorted(Map.Entry.<String, Double>comparingByValue().reversed()).map(stringDoubleEntry -> {
                  return new AuthorRatingResponse(stringDoubleEntry.getKey(),stringDoubleEntry.getValue());

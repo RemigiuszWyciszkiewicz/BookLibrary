@@ -11,6 +11,7 @@ import org.springframework.web.client.RestTemplate;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 public class BooksFromGoogleApiProvider {
@@ -19,14 +20,16 @@ public class BooksFromGoogleApiProvider {
 
 
 
-    public List<BookResponse> fetchResponseBookList() throws IOException {
+    public List<BookResponse> fetchResponseBookList() {
 
 
         List<BookResponse> responeBooks = deserializeDataFromJsonToBook().stream().map(book -> {
-            String thumbnailUrl;
-            if (book.getVolumeInfo().getImageLinks() == null) {
-                thumbnailUrl = null;
-            } else thumbnailUrl = book.getVolumeInfo().getImageLinks().get("thumbnail");
+
+            String thumbnailUrl = null;
+
+            if (book.getVolumeInfo().getImageLinks() != null)
+                thumbnailUrl = book.getVolumeInfo().getImageLinks().get("thumbnail");
+
 
             return new BookResponse(
                     book.getVolumeInfo().getIndustryIdentifiers().get(0).getIdentifier(),
