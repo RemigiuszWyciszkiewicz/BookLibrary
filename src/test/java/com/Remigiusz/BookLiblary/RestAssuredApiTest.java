@@ -26,11 +26,7 @@ public class RestAssuredApiTest {
 
     }
 
-    @Test
-    public void testAllBooks() {
-        get(Endpoints.CONTEXT_PATH+"/books").then().statusCode(200).log().body();
 
-    }
 
 
 

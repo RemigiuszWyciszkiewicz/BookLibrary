@@ -70,7 +70,7 @@ public class BookService {
                     if(bookWithoutNulls.get(index_2).getAuthors().contains(authors.get(index_1)))
                         authorRatingResponsesList.add(new AuthorRatingResponse(authors.get(index_1),bookWithoutNulls.get(index_2).getAverageRating()));
 
-                } );
+                });
                 });
 
         // 5 - Grouping by author
