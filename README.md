@@ -26,7 +26,7 @@ https://www.googleapis.com/books/v1/volumes?q=java&maxResults=40&fields=items
 
 ### Try it yourself !
 
-You can test this app by running this project in you own computer and paste these links in your browser:
+You can test this app by running this project on you own computer and paste these links in your browser:
 
  - http://localhost:8080/Cognifide-BookLibrary/authors
  - http://localhost:8080/Cognifide-BookLibrary/books/Computers
